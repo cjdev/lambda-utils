@@ -8,12 +8,12 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
 
-public class ConsumerMatcher<T> extends TypeSafeMatcher<T>{
+public class MatcherFactory<T> extends TypeSafeMatcher<T>{
 
     private final Consumer<T> consumer;
     private String error="";
 
-    public ConsumerMatcher(Consumer<T> consumer) {
+    public MatcherFactory(Consumer<T> consumer) {
         this.consumer = consumer;
     }
 
@@ -42,7 +42,7 @@ public class ConsumerMatcher<T> extends TypeSafeMatcher<T>{
      * Should only be used with "oneOf" style assertions because this is expected to throw an assertionError.
      */
 	public static <T> Matcher<T> asserting(Consumer<T> consumer) {
-		return new ConsumerMatcher<T>(consumer);
+		return new MatcherFactory<T>(consumer);
 	}
 }
 

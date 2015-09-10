@@ -22,20 +22,20 @@ public class ConsumerMatcherTest {
 	
 	@Test
 	public void canMatchWithAConsumer(){
-		assertThat(new TestClass(), ConsumerMatcher.asserting((c)->assertTrue(c.stringField.equals("String"))));
+		assertThat(new TestClass(), MatcherFactory.asserting((c)->assertTrue(c.stringField.equals("String"))));
 	}
 
 	@Test(expected=AssertionError.class)
 	public void canFailWithAConsumer(){
-		assertThat(new TestClass(), ConsumerMatcher.asserting((c)->assertTrue(c.stringField.equals("bad string"))));
+		assertThat(new TestClass(), MatcherFactory.asserting((c)->assertTrue(c.stringField.equals("bad string"))));
 	}
 	
 	@Test
 	public void canUseAssertingToFindThingsInsideOfLists(){
 		List<TestClass> set = Arrays.asList(new TestClass("A String"), new TestClass("Different String"));
 		
-		assertThat(set, hasItem(ConsumerMatcher.<TestClass>asserting((c)->assertEquals(c.stringField,("A String")))));
+		assertThat(set, hasItem(MatcherFactory.<TestClass>asserting((c)->assertEquals(c.stringField,("A String")))));
 		
-		assertThat(set, hasItem(ConsumerMatcher.<TestClass>asserting((c)->assertEquals(c.stringField,("Different String")))));
+		assertThat(set, hasItem(MatcherFactory.<TestClass>asserting((c)->assertEquals(c.stringField,("Different String")))));
 	}
 }
