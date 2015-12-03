@@ -14,6 +14,12 @@ public class Functions {
 	}
 	
 	public static <T, U, V> Map<V, U>  retypeValues(Map<V, T> input, Function<T, U> valueMapper){
-		return input.keySet().stream().collect(Collectors.toMap(k->k, k->valueMapper.apply(input.get(k))));
+		return input.keySet().stream().collect(Collectors.toMap(k->k, v->{
+			try{
+				return (U) valueMapper.apply(input.get(v));
+			}catch(NullPointerException e){
+				throw new RuntimeException("The provided function must return a non-null value.",e);
+			}
+		}));
 	}
 }
