@@ -40,7 +40,7 @@ public class MatcherFactory<T> extends TypeSafeMatcher<T> {
      * Should only be used with "oneOf" style assertions because this is expected to throw an assertionError.
      */
     public static <T> Matcher<T> asserting(Consumer<T> consumer) {
-        return new MatcherFactory<T>(consumer);
+        return new MatcherFactory<>(consumer);
     }
 }
 
