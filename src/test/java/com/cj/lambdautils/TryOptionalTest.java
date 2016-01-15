@@ -1,13 +1,12 @@
 package com.cj.lambdautils;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 import java.util.Optional;
 
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 public class TryOptionalTest {
-
     @Test
     public void TryYieldsOptional() throws Exception {
 
