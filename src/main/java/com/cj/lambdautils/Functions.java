@@ -2,8 +2,10 @@ package com.cj.lambdautils;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -60,4 +62,12 @@ public class Functions {
         Iterable<T> iterable = () -> iterator;
         return StreamSupport.stream(iterable.spliterator(), parallel);
     }
+    
+
+	public static <T> Stream<T> streamOf(Supplier<Optional<T>> supplier) {
+		return new FiniteGenerator<T>(supplier).stream();
+		
+		
+		
+	}
 }
