@@ -55,7 +55,7 @@ public class Functions {
      * Converts the iterator into a stream, can be parallel or not.
      *
      * @param iterator
-     * @param parallel
+     * @param parallel True for parallel, False For Non-Parallel.
      * @return
      */
     public static <T> Stream<T> streamOf(Iterator<T> iterator, boolean parallel) {
@@ -64,10 +64,13 @@ public class Functions {
     }
     
 
+    /**
+     * Allows you to construct a non-parallel stream out of a function that supplies values.
+     * The stream ends when Optiona.empty() is returned.
+     * @param supplier
+     * @return
+     */
 	public static <T> Stream<T> streamOf(Supplier<Optional<T>> supplier) {
 		return new FiniteGenerator<T>(supplier).stream();
-		
-		
-		
 	}
 }

@@ -6,14 +6,23 @@ import java.util.stream.Stream;
 
 public class Optionals {
     /**
-     * This method is intended to be used to shorten
-     * Stream<Optional<T>> stream
+     * This method is intended to be used to filter out the empty values in a stream of optionals in a pipeline.  So, given a Stream&lt;Optional&lt;T>>, 
      * <p>
-     * From:
-     * stream.filter(Stream::isPresent).map(Stream::get)
+     * Instead Of:
+     * <pre>
+	 * {@code
+	 * stream.filter(Stream::isPresent).map(Stream::get)
+	 * }
+	 * </pre>
+     * 
      * <p>
-     * To:
-     * stream.flatMap(Optionals.nonEmpty())
+     * You can:
+     * <pre>
+	 * {@code
+	 * stream.flatMap(Optionals.nonEmpty())
+	 * }
+	 * </pre>
+     * 
      *
      * @return
      */
