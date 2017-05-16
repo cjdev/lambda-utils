@@ -4,53 +4,96 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-final class Either<L, R> {
+interface Either<L, R> {
 	public static <L, R> Either<L, R> left(L value) {
-		return new Either<>(Optional.of(value), Optional.empty());
+		return new Left<>(value);
 	}
 
 	public static <L, R> Either<L, R> right(R value) {
-		return new Either<>(Optional.empty(), Optional.of(value));
+		return new Right<>(value);
 	}
 
-	private final Optional<L> left;
-	private final Optional<R> right;
-
-	private Either(Optional<L> l, Optional<R> r) {
-		left = l;
-		right = r;
+	public default boolean isRight() {
+		return fold(l -> false, r -> true);
 	}
 
-	public <T> T map(Function<? super L, ? extends T> lFunc, Function<? super R, ? extends T> rFunc) {
-		return left.<T>map(lFunc).orElseGet(() -> right.map(rFunc).get());
+	public default boolean isLeft() {
+		return fold(l -> true, r -> false);
 	}
 
-	public <T> Either<T, R> mapLeft(Function<? super L, ? extends T> lFunc) {
-		return new Either<>(left.map(lFunc), right);
+	public <T> T fold(Function<? super L, ? extends T> lFunc, Function<? super R, ? extends T> rFunc);
+
+	public <T> Either<T, R> mapLeft(Function<? super L, ? extends T> lFunc);
+
+	public <T> Either<L, T> mapRight(Function<? super R, ? extends T> rFunc);
+
+	public void apply(Consumer<? super L> lFunc, Consumer<? super R> rFunc);
+
+	public Optional<R> optionRight();
+
+	public Optional<L> optionLeft();
+
+	class Left<L, R> implements Either<L, R> {
+		private final L value;
+
+		public Left(L value) {
+			this.value = value;
+		}
+
+		public <T> T fold(Function<? super L, ? extends T> lFunc, Function<? super R, ? extends T> rFunc) {
+			return lFunc.apply(value);
+		}
+
+		public <T> Either<T, R> mapLeft(Function<? super L, ? extends T> lFunc) {
+			return new Left<>(lFunc.apply(value));
+		}
+
+		public <T> Either<L, T> mapRight(Function<? super R, ? extends T> rFunc) {
+			return new Left<>(value);
+		}
+
+		public void apply(Consumer<? super L> lFunc, Consumer<? super R> rFunc) {
+			lFunc.accept(value);
+		}
+
+		public Optional<R> optionRight() {
+			return Optional.empty();
+		}
+
+		public Optional<L> optionLeft() {
+			return Optional.of(value);
+		}
 	}
 
-	public <T> Either<L, T> mapRight(Function<? super R, ? extends T> rFunc) {
-		return new Either<>(left, right.map(rFunc));
-	}
+	class Right<L, R> implements Either<L, R> {
+		private final R value;
 
-	public void apply(Consumer<? super L> lFunc, Consumer<? super R> rFunc) {
-		left.ifPresent(lFunc);
-		right.ifPresent(rFunc);
-	}
+		public Right(R value) {
+			this.value = value;
+		}
 
-	public boolean isRight() {
-		return right.isPresent();
-	}
+		public <T> T fold(Function<? super L, ? extends T> lFunc, Function<? super R, ? extends T> rFunc) {
+			return rFunc.apply(value);
+		}
 
-	public boolean isLeft() {
-		return !right.isPresent();
-	}
+		public <T> Either<T, R> mapLeft(Function<? super L, ? extends T> lFunc) {
+			return new Right<>(value);
+		}
 
-	public Optional<R> optionRight() {
-		return right;
-	}
-	
-	public Optional<L> optionLeft() {
-		return left;
+		public <T> Either<L, T> mapRight(Function<? super R, ? extends T> rFunc) {
+			return new Right<>(rFunc.apply(value));
+		}
+
+		public void apply(Consumer<? super L> lFunc, Consumer<? super R> rFunc) {
+			rFunc.accept(value);
+		}
+
+		public Optional<R> optionRight() {
+			return Optional.of(value);
+		}
+
+		public Optional<L> optionLeft() {
+			return Optional.empty();
+		}
 	}
 }

@@ -31,11 +31,7 @@ public class Try {
 	 * @return the result of the function wrapped in an Optional.
 	 */
 	public static <T> Optional<T> too(ThrowingSupplier<T> function) {
-		try {
-            return Optional.ofNullable(function.supply());
-        } catch (Exception e) {
-            return Optional.empty();
-        }
+		return to(function).optionRight();
 	}	
 	
 	public static <T> Either<Exception, T> to(ThrowingSupplier<T> function) {
