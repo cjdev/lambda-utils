@@ -4,7 +4,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-interface Either<L, R> {
+public interface Either<L, R> {
 	public static <L, R> Either<L, R> left(L value) {
 		return new Left<>(value);
 	}
@@ -33,10 +33,10 @@ interface Either<L, R> {
 
 	public Optional<L> optionLeft();
 
-	class Left<L, R> implements Either<L, R> {
+	final class Left<L, R> implements Either<L, R> {
 		private final L value;
 
-		public Left(L value) {
+		private Left(L value) {
 			this.value = value;
 		}
 
@@ -65,10 +65,10 @@ interface Either<L, R> {
 		}
 	}
 
-	class Right<L, R> implements Either<L, R> {
+	final class Right<L, R> implements Either<L, R> {
 		private final R value;
 
-		public Right(R value) {
+		private Right(R value) {
 			this.value = value;
 		}
 

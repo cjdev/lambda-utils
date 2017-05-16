@@ -1,7 +1,6 @@
 package com.cj.lambdautils;
 
 import java.util.Optional;
-import java.util.function.Supplier;
 
 public class Try {    
 
