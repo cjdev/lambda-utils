@@ -26,14 +26,24 @@ public class Try {
 	 * </ol>
 	 *    
 	 * This allows pipelining much more easily than standard exception handling.
+	 * @deprecated use to instead, which returns an either.
 	 * @param function A function that may throw an exception or return null.
 	 * @return the result of the function wrapped in an Optional.
 	 */
-	public static <T> Optional<T> to(ThrowingSupplier<T> function) {
+	public static <T> Optional<T> too(ThrowingSupplier<T> function) {
 		try {
             return Optional.ofNullable(function.supply());
         } catch (Exception e) {
             return Optional.empty();
         }
 	}	
+	
+	public static <T> Either<Exception, T> to(ThrowingSupplier<T> function) {
+		try {
+            return Either.right(function.supply());
+        } catch (Exception e) {
+            return Either.left(e);
+        } 
+		
+	}
 }
