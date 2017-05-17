@@ -63,6 +63,14 @@ public abstract class Either<L, R> {
                 ()    -> Either.<T0, R>neither()
         );
     }
+    
+    public final L leftOrElse(L fallback){
+        return fold(
+                (L l) -> l,
+                (R r) -> fallback,
+                ()    -> fallback
+        );
+    }
 
     public final Optional<R> getRight() {
         return fold(
@@ -89,6 +97,14 @@ public abstract class Either<L, R> {
                 (L l) -> Either.<L, T0>left(l),
                 (R r) -> k.apply(r),
                 ()    -> Either.<L, T0>neither()
+        );
+    }
+    
+    public final R rightOrElse(R fallback){
+        return fold(
+                (L l) -> fallback,
+                (R r) -> r,
+                ()    -> fallback
         );
     }
     
