@@ -86,6 +86,19 @@ public class TryTest {
     	assertEquals(Either.neither(), s.mapRight(v->v++));
     }
     
+    @Test
+    public void canPassVoidFunctionsToForEach(){
+    	Either<Exception, String> s = Try.to(()->{
+    		return "success";
+		});
+    	
+    	s.fold(l->{}, r->{}, ()->{});
+    	
+    	assertTrue(s.isRight());
+    	
+    	
+    }
+    
     
     public void throwCheckedException() throws Exception{
     	throw new Exception("This is a checked exception");

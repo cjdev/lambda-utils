@@ -1,6 +1,7 @@
 package com.cj.lambdautils;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -27,6 +28,26 @@ public abstract class Either<L, R> {
     
 
     public abstract <T0> T0 fold(Function<L, T0> leftCallback, Function<R, T0> rightCallback, Supplier<T0> fallback);
+    
+    /**
+     * For functions that return void.
+     */
+    public void fold(Consumer<L> leftCallback, Consumer<R> rightCallback, Runnable fallback){
+    	fold(
+    			l->{
+    				leftCallback.accept(l);
+    				return null;
+    			},
+    			r->{
+    				rightCallback.accept(r);
+    				return null;
+    			},
+    			()->{
+    				fallback.run();
+    				return null;
+    			}
+			);
+    }
 
     public final boolean isNeither() {
     	return fold(
