@@ -17,22 +17,21 @@ public class Try {
         }
 	}
 	
+	public static <T> Optional<T> toOption(ThrowingSupplier<T> function) {
+		return to(function).getRight();
+	}	
+	
 	/**
-	 * Allows you to encapsulate a supplier that returns a value inside of an Optional which will be empty if:
+	 * Allows you to encapsulate a supplier that returns a value inside of an Either which will be empty if:
 	 * <ol>
 	 *    <li>The supplier returns null.
 	 *    <li>The supplier throws an exception.
 	 * </ol>
 	 *    
 	 * This allows pipelining much more easily than standard exception handling.
-	 * @deprecated use to instead, which returns an either.
 	 * @param function A function that may throw an exception or return null.
 	 * @return the result of the function wrapped in an Optional.
 	 */
-	public static <T> Optional<T> too(ThrowingSupplier<T> function) {
-		return to(function).optionRight();
-	}	
-	
 	public static <T> Either<Exception, T> to(ThrowingSupplier<T> function) {
 		try {
             return Either.right(function.supply());

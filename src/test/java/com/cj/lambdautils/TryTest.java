@@ -14,7 +14,7 @@ public class TryTest {
     
     @Test
     public void oldCanOptionaNotPresentACheckedThrowingSupplier(){
-    	Optional<String> s = Try.too(()->{
+    	Optional<String> s = Try.toOption(()->{
     		throwCheckedException();
     		return "Anything";
 		});
@@ -24,7 +24,7 @@ public class TryTest {
     
     @Test
     public void oldCanOptionaNotPresentAnUnCheckedThrowingSupplier(){
-    	Optional<String> s = Try.too(()->{
+    	Optional<String> s = Try.toOption(()->{
     		throwUncheckedException();
     		return "Anything";
 		});
@@ -34,7 +34,7 @@ public class TryTest {
     
     @Test
     public void oldCanConvertASupplierIntoAnOptional(){
-    	Optional<String> s = Try.too(()->{
+    	Optional<String> s = Try.toOption(()->{
     		return "Anything";
 		});
     	
@@ -72,7 +72,18 @@ public class TryTest {
     	
     	assertTrue(s.isRight());
     	assertFalse(s.isLeft());
-    	assertEquals(s.optionRight().get(), "Anything");
+    	assertEquals(s.getRight().get(), "Anything");
+    }
+    
+    @Test
+    public void whenFunctionReturnsNullThenTheAnswerIsNeither(){
+    	Either<Exception, Integer> s = Try.to(()->{
+    		return null;
+		});
+    	
+    	assertFalse(s.isRight());
+    	assertFalse(s.isLeft());
+    	assertEquals(Either.neither(), s.mapRight(v->v++));
     }
     
     
