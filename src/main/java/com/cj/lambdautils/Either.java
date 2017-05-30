@@ -73,7 +73,13 @@ public abstract class Either<L, R> {
 		getLeft().ifPresent(c);
 	}
 
-	
+	public void ifLeftOrNone(Consumer<Optional<L>> c) {
+		fold(
+            (L l) -> c.accept(getLeft()),
+            (R r) -> {},
+            ()    -> c.accept(Optional.empty())	
+		);
+	}
 
     public final <T0> Either<T0, R> mapLeft(Function<L, T0> f) {
         return fold(
