@@ -69,6 +69,12 @@ public abstract class Either<L, R> {
 		return getLeft().isPresent();
 	}
 
+	public void ifLeft(Consumer<L> c) {
+		getLeft().ifPresent(c);
+	}
+
+	
+
     public final <T0> Either<T0, R> mapLeft(Function<L, T0> f) {
         return fold(
                 (L l) -> Either.<T0, R>left(f.apply(l)),
@@ -103,6 +109,10 @@ public abstract class Either<L, R> {
 
 	public boolean isRight() {
 		return getRight().isPresent();
+	}
+	
+	public void ifRight(Consumer<R> c) {
+		getRight().ifPresent(c);
 	}
 
     public final <T0> Either<L, T0> mapRight(Function<R, T0> f) {
