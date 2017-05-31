@@ -105,6 +105,14 @@ public abstract class Either<L, R> {
         );
     }
 
+    public final L leftOrElse(Function<Optional<R>, L> fallback){
+        return fold(
+                (L l) -> l,
+                (R r) -> fallback.apply(Optional.ofNullable(r)),
+                ()    -> fallback.apply(Optional.empty())
+        );
+    }
+
     public final Optional<R> getRight() {
         return fold(
                 (L l) -> Optional.<R>empty(),
@@ -142,6 +150,14 @@ public abstract class Either<L, R> {
                 (L l) -> fallback,
                 (R r) -> r,
                 ()    -> fallback
+        );
+    }
+
+    public final R rightOrElse(Function<Optional<L>, R> fallback){
+        return fold(
+                (L l) -> fallback.apply(Optional.ofNullable(l)),
+                (R r) -> r,
+                ()    -> fallback.apply(Optional.empty())
         );
     }
     
