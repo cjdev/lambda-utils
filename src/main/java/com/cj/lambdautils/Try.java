@@ -9,11 +9,20 @@ public class Try {
 	 *    
 	 * This allows pipelining much more easily than standard exception handling.
 	 */
-	public static void to(ThrowingRunnable function) {
+	public static void orElseRuntimeException(ThrowingRunnable function) {
         try {
             function.run();
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+	}
+	
+	public static Either<Exception, Void> to(ThrowingRunnable function) {
+        try {
+        	function.run();
+            return Either.right(null);
+        } catch (Exception e) {
+            return Either.left(e);
         }
 	}
 	
