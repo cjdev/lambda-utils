@@ -7,11 +7,6 @@ import java.util.Optional;
 import static org.junit.Assert.*;
 
 public class TryTest {
-	@Test(expected=RuntimeException.class)
-	public void oldCanWrapExceptionsFromAThrowingRunnable(){
-		Try.to(()->throwCheckedException());
-	}
-
 	@Test
 	public void oldCanOptionaNotPresentACheckedThrowingSupplier(){
 		Optional<String> s = Try.toOption(()->{
